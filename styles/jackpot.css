@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Game 1: Jackpot Throw — Canvas Arena, Telemetry HUD & Distribution Chart
+   ========================================================================== */
+
+.jackpot-stage-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.jackpot-canvas-wrap {
+  position: relative;
+  width: 100%;
+  background: #07221a;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+#jackpot-canvas {
+  display: block;
+  width: 100%;
+}
+
+.jackpot-prompt-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  padding: 0.36rem 0.9rem;
+  background: rgba(17, 13, 11, 0.82);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--ivory-muted);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.jackpot-banner {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.65rem 1.3rem;
+  border-radius: var(--radius-md);
+  background: rgba(17, 13, 11, 0.92);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  max-width: 90%;
+}
+
+.jackpot-banner strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+
+.jackpot-banner span {
+  font-size: 0.84rem;
+  color: var(--ivory-muted);
+}
+
+.jackpot-banner--win {
+  border-color: var(--emerald-win);
+}
+
+.jackpot-banner--win strong {
+  color: #82e0aa;
+}
+
+.jackpot-banner--loss {
+  border-color: rgba(197, 58, 50, 0.72);
+}
+
+.jackpot-banner--loss strong {
+  color: #f0958e;
+}
+
+.jackpot-hud {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(14, 11, 9, 0.65);
+}
+
+.hud-metric {
+  padding: 0.8rem 1rem;
+  border-right: 1px solid rgba(212, 168, 83, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.hud-metric:last-child {
+  border-right: none;
+}
+
+.hud-metric__label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ivory-dim);
+}
+
+.hud-metric__value {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ivory);
+}
+
+.jackpot-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 1.2rem 1.4rem;
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.math-inspector__chart {
+  background: rgba(7, 29, 22, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.65rem;
+}
+
+#jp-dist-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 780px) {
+  .jackpot-hud {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hud-metric {
+    border-bottom: 1px solid rgba(212, 168, 83, 0.1);
+  }
+  .jackpot-prompt-hint {
+    font-size: 0.72rem;
+    white-space: normal;
+    text-align: center;
+    max-width: 90%;
+  }
+}

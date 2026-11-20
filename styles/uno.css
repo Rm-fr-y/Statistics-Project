@@ -1,0 +1,429 @@
+/* ==========================================================================
+   Game 3: Fair Casino Uno — Felt Card Table, Fanned Hands & Color Picker
+   ========================================================================== */
+
+.uno-table {
+  position: relative;
+  background: radial-gradient(ellipse 85% 75% at 50% 50%, #124c3a 0%, #092c22 72%, #061d16 100%);
+  border: 2px solid var(--border-strong);
+  border-radius: 24px;
+  padding: 1.45rem 1.6rem;
+  box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.45), var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.uno-seat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.uno-seat__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.seat-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ivory);
+}
+
+.seat-count {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ivory-muted);
+  padding: 0.14rem 0.52rem;
+  border-radius: 999px;
+  background: rgba(17, 13, 11, 0.55);
+  border: 1px solid var(--border-subtle);
+}
+
+.uno-shout {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
+  background: var(--crimson);
+  color: #fff;
+}
+
+.player-turn-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-uno-shout {
+  padding: 0.36rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #f2a93b;
+  background: #b92d25;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.uno-hand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.52rem;
+  min-height: 92px;
+}
+
+.uno-hand--house {
+  min-height: 76px;
+}
+
+.uno-center {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 1.05rem 1.25rem;
+  background: rgba(14, 11, 9, 0.42);
+  border: 1px solid rgba(212, 168, 83, 0.22);
+  border-radius: var(--radius-lg);
+}
+
+.uno-piles {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.uno-pile-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--ivory);
+}
+
+.uno-pile-btn:not(:disabled) .uno-card--back {
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.uno-pile-btn:not(:disabled):hover .uno-card--back {
+  transform: translateY(-4px);
+}
+
+.uno-pile-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.pile-caption {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--brass-bright);
+}
+
+.uno-discard-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.active-color-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ivory-muted);
+}
+
+.color-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ivory-dim);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.color-dot--red { background: #c53a32; }
+.color-dot--yellow { background: #d4a026; }
+.color-dot--green { background: #2e8b57; }
+.color-dot--blue { background: #2c6ea3; }
+
+.uno-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.turn-pill {
+  align-self: flex-start;
+  padding: 0.34rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  background: var(--wood-800);
+  border: 1px solid var(--border-subtle);
+  color: var(--ivory);
+}
+
+.turn-pill--player {
+  background: rgba(212, 168, 83, 0.22);
+  border-color: var(--brass);
+  color: var(--brass-bright);
+}
+
+.turn-pill--house {
+  background: rgba(245, 239, 230, 0.1);
+  color: var(--ivory-muted);
+}
+
+.turn-pill--win {
+  background: rgba(72, 187, 120, 0.24);
+  border-color: var(--emerald-win);
+  color: #9ae6b4;
+}
+
+.turn-pill--loss {
+  background: var(--crimson-soft);
+  border-color: var(--crimson);
+  color: #f4aca6;
+}
+
+.turn-pill--push {
+  background: rgba(212, 168, 83, 0.24);
+  border-color: var(--brass);
+  color: var(--brass-bright);
+}
+
+.uno-event-log {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ivory-muted);
+}
+
+.uno-rule-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.rule-pill {
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(17, 13, 11, 0.65);
+  border: 1px solid var(--border-subtle);
+  color: var(--ivory-muted);
+}
+
+.rule-pill--warn {
+  border-color: #e38c36;
+  color: #f6c27a;
+}
+
+/* Uno Cards */
+.uno-card {
+  position: relative;
+  width: 72px;
+  height: 104px;
+  border-radius: 10px;
+  border: 2.5px solid #f5efe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.36);
+  transition: transform 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
+  user-select: none;
+  padding: 0;
+}
+
+.uno-card--mini {
+  width: 50px;
+  height: 72px;
+  border-width: 2px;
+  font-size: 0.72rem;
+}
+
+.uno-card--red { background: linear-gradient(155deg, #c73c33 0%, #8f221b 100%); }
+.uno-card--yellow { background: linear-gradient(155deg, #d7a62e 0%, #9b7013 100%); color: #1a130b; }
+.uno-card--green { background: linear-gradient(155deg, #2d8754 0%, #1b5936 100%); }
+.uno-card--blue { background: linear-gradient(155deg, #2b6ea3 0%, #19456b 100%); }
+.uno-card--wild {
+  background:
+    conic-gradient(from 45deg at 50% 50%, #b5342c 0deg 90deg, #2b6ea3 90deg 180deg, #2d8754 180deg 270deg, #c99927 270deg 360deg);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+}
+
+.uno-card--back {
+  background: linear-gradient(155deg, #241b16 0%, #120d0b 100%);
+  border-color: var(--brass);
+}
+
+.uno-card__oval {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: #a52b24;
+  color: var(--brass-bright);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  transform: rotate(-18deg);
+  border: 1px solid rgba(245, 239, 230, 0.45);
+}
+
+.uno-card--mini .uno-card__oval {
+  font-size: 0.62rem;
+  padding: 0.14rem 0.34rem;
+}
+
+.uno-card--placeholder {
+  background: rgba(17, 13, 11, 0.45);
+  border: 2px dashed var(--border-subtle);
+  color: var(--ivory-dim);
+  font-size: 0.9rem;
+}
+
+.uno-card__corner {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.uno-card__corner--tl {
+  top: 6px;
+  left: 7px;
+}
+
+.uno-card__corner--br {
+  bottom: 6px;
+  right: 7px;
+}
+
+.uno-card__center {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.uno-card--interactive.is-playable {
+  cursor: pointer;
+}
+
+.uno-card--interactive.is-playable:hover {
+  transform: translateY(-9px);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.5);
+}
+
+.uno-card--interactive.is-dimmed {
+  opacity: 0.46;
+  cursor: not-allowed;
+}
+
+.uno-card--interactive.is-drawn-highlight {
+  transform: translateY(-7px);
+  box-shadow: 0 0 0 3px var(--brass-bright), 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Wild Color Modal */
+.wild-modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 12, 10, 0.74);
+  backdrop-filter: blur(4px);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+}
+
+.wild-modal__card {
+  background: var(--wood-900);
+  border: 1px solid var(--brass);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.5rem;
+  text-align: center;
+  width: min(320px, 90%);
+  box-shadow: var(--shadow-card);
+}
+
+.wild-modal__card h3 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  color: var(--ivory);
+}
+
+.wild-color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.wild-color-btn {
+  padding: 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.12s ease;
+}
+
+.wild-color-btn:hover {
+  transform: translateY(-2px);
+}
+
+.wild-color-btn--red { background: #b5342c; }
+.wild-color-btn--yellow { background: #c99927; color: #16110d; }
+.wild-color-btn--green { background: #2d8754; }
+.wild-color-btn--blue { background: #2b6ea3; }
+
+.uno-footer-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem 1.4rem;
+}
+
+@media (max-width: 780px) {
+  .uno-center {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .turn-pill {
+    align-self: center;
+  }
+  .uno-rule-pills {
+    justify-content: center;
+  }
+  .uno-card {
+    width: 60px;
+    height: 88px;
+  }
+  .uno-card__center {
+    font-size: 1.38rem;
+  }
+}
