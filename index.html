@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velvet &amp; Brass Casino — Three Statistically Engineered Tables</title>
+  <meta
+    name="description"
+    content="Play three classic casino tables engineered with transparent long-run probabilities: House-Skewed Physics Jackpot, Player-Skewed Casino Wordle, and 50/50 Long-Run Fair Uno."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./styles/jackpot.css" />
+  <link rel="stylesheet" href="./styles/wordle.css" />
+  <link rel="stylesheet" href="./styles/uno.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-bar" role="banner">
+      <div class="top-bar__inner">
+        <a href="#home" id="nav-home-brand" class="brand-link" aria-label="Velvet and Brass Casino Home">
+          <span class="brand-emblem" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="28" height="28" fill="none">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.6" />
+              <circle cx="16" cy="16" r="10.2" stroke="currentColor" stroke-width="0.9" stroke-dasharray="2.5 2.5" />
+              <path d="M16 7.5L21 16L16 24.5L11 16L16 7.5Z" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-title">Velvet &amp; Brass</span>
+            <span class="brand-subtitle">Grand Salon</span>
+          </span>
+        </a>
+
+        <nav class="top-nav" aria-label="Game tables">
+          <a href="#home" id="nav-link-home" class="nav-tab" data-route="home">Lobby</a>
+          <a href="#jackpot" id="nav-link-jackpot" class="nav-tab" data-route="jackpot">Jackpot</a>
+          <a href="#wordle" id="nav-link-wordle" class="nav-tab" data-route="wordle">Wordle</a>
+          <a href="#uno" id="nav-link-uno" class="nav-tab" data-route="uno">Fair Uno</a>
+        </nav>
+
+        <div class="top-controls">
+          <div class="bankroll-pill" aria-live="polite">
+            <span class="chip-icon" aria-hidden="true"></span>
+            <div class="bankroll-pill__meta">
+              <span class="bankroll-pill__label">Bankroll</span>
+              <span id="header-bankroll-value" class="bankroll-pill__amount">$1,000</span>
+            </div>
+            <button
+              type="button"
+              id="btn-rebuy"
+              class="btn-rebuy"
+              title="Add $1,000 casino chips"
+            >
+              +$1k
+            </button>
+          </div>
+
+          <button
+            type="button"
+            id="btn-ledger-toggle"
+            class="icon-btn"
+            aria-expanded="false"
+            aria-controls="ledger-drawer"
+            title="Session Ledger &amp; Odds"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 19h16M7 15v-5M12 15V7M17 15v-3" stroke-linecap="round" />
+            </svg>
+            <span class="icon-btn__label">Ledger</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-audio-toggle"
+            class="icon-btn"
+            aria-pressed="true"
+            title="Toggle sound effects"
+          >
+            <svg id="audio-icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M11 5L6 9H3v6h3l5 4V5z" stroke-linejoin="round" />
+              <path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13" stroke-linecap="round" />
+            </svg>
+            <svg id="audio-icon-off" class="hidden" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M11 5L6 9H3v6h3l5 4V5z" stroke-linejoin="round" />
+              <path d="M22 9l-6 6M16 9l6 6" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <aside id="ledger-drawer" class="ledger-drawer hidden" aria-label="Session Statistics">
+        <div class="ledger-drawer__inner">
+          <div class="ledger-drawer__header">
+            <h2>Session Ledger</h2>
+            <button type="button" id="btn-reset-session" class="btn-ghost-sm">Reset Chips &amp; Stats</button>
+          </div>
+          <div id="ledger-content" class="ledger-grid"></div>
+        </div>
+      </aside>
+    </header>
+
+    <main id="app-view" class="main-stage" role="main" tabindex="-1"></main>
+
+    <footer class="site-footer">
+      <p>Velvet &amp; Brass Casino &middot; Virtual chips only &middot; Engineered probabilities verified by Monte Carlo simulation</p>
+    </footer>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
