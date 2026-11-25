@@ -8,7 +8,7 @@ import {
   MAX_GUESSES,
   WORD_LENGTH,
   SKEW_LEVEL_CONFIG,
-  GUESS_PAYOUT_MULTIPLIERS,
+  getPayoutMultipliers,
   createWordleRound,
   submitWordleGuess,
 } from './wordleEngine.js';
@@ -88,9 +88,9 @@ export function mountWordleGame(container) {
           </div>
 
           <div class="panel-block">
-            <span class="control-label">Adjusted Prize Ladder</span>
+            <span class="control-label" id="wd-ladder-label">Adjusted Prize Ladder (Skew ${skewLevel})</span>
             <ol id="wd-payout-ladder" class="payout-ladder">
-              ${Object.entries(GUESS_PAYOUT_MULTIPLIERS)
+              ${Object.entries(getPayoutMultipliers(skewLevel))
                 .map(
                   ([g, mult]) => `
                   <li class="payout-row" data-guess="${g}">
@@ -115,6 +115,7 @@ export function mountWordleGame(container) {
   const skewDescEl = container.querySelector('#wd-skew-desc');
   const chipRowEl = container.querySelector('#wd-chip-row');
   const dealBtn = container.querySelector('#wd-deal-btn');
+  const ladderLabelEl = container.querySelector('#wd-ladder-label');
   const payoutLadderEl = container.querySelector('#wd-payout-ladder');
 
   function buildGrid() {
@@ -207,12 +208,18 @@ export function mountWordleGame(container) {
       }
     });
 
-    // Update payout ladder active row & chip values
+    // Update payout ladder active row, multipliers & chip values
     const stake = round ? round.wager : wager;
+    const activeSkew = round ? round.skewLevel : skewLevel;
+    const multipliers = getPayoutMultipliers(activeSkew);
+    ladderLabelEl.textContent = `Adjusted Prize Ladder (Skew ${activeSkew})`;
+
     payoutLadderEl.querySelectorAll('.payout-row').forEach((li) => {
       const g = Number(li.dataset.guess);
-      const mult = GUESS_PAYOUT_MULTIPLIERS[g];
+      const mult = multipliers[g];
+      const multSpan = li.querySelector('.payout-row__mult');
       const chipSpan = li.querySelector('.payout-row__chips');
+      multSpan.textContent = `${mult.toFixed(2)}x`;
       chipSpan.textContent = formatChips(Math.round(stake * mult));
 
       li.classList.remove('is-current', 'is-won', 'is-passed');
@@ -394,6 +401,7 @@ export function mountWordleGame(container) {
     skewLevel = Number(btn.dataset.level);
     sound.chipClick();
     syncControls();
+    renderBoard();
   });
 
   chipRowEl.addEventListener('click', (e) => {

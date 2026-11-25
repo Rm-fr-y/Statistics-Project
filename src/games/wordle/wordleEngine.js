@@ -52,17 +52,41 @@ export const SKEW_LEVEL_CONFIG = Object.freeze({
 });
 
 /**
- * Tiered prize multipliers by winning guess (1..6).
- * Calibrated with skew levels 3–5 to deliver positive player EV (> 1.0x RTP).
+ * Tiered prize multipliers by skew level (3..5) and winning guess (1..6).
+ * More player skew = lower prize multipliers, while keeping positive player EV (> 1.0x RTP).
  */
-export const GUESS_PAYOUT_MULTIPLIERS = Object.freeze({
-  1: 5.0,
-  2: 2.75,
-  3: 1.75,
-  4: 1.25,
-  5: 0.9,
-  6: 0.6,
+export const SKEW_PAYOUT_MULTIPLIERS = Object.freeze({
+  3: Object.freeze({
+    1: 5.0,
+    2: 2.75,
+    3: 1.75,
+    4: 1.25,
+    5: 0.9,
+    6: 0.6,
+  }),
+  4: Object.freeze({
+    1: 4.0,
+    2: 2.25,
+    3: 1.45,
+    4: 1.05,
+    5: 0.75,
+    6: 0.5,
+  }),
+  5: Object.freeze({
+    1: 3.0,
+    2: 1.75,
+    3: 1.2,
+    4: 0.85,
+    5: 0.6,
+    6: 0.4,
+  }),
 });
+
+export const GUESS_PAYOUT_MULTIPLIERS = SKEW_PAYOUT_MULTIPLIERS[4];
+
+export function getPayoutMultipliers(skewLevel = 4) {
+  return SKEW_PAYOUT_MULTIPLIERS[normalizeSkewLevel(skewLevel)];
+}
 
 export function normalizeSkewLevel(level) {
   const n = Math.round(Number(level));
@@ -160,13 +184,14 @@ export function evaluateGuess(guess, secret) {
 }
 
 /**
- * Calculate chip payout for solving on `guessNumber` (1..6) or failing (null).
+ * Calculate chip payout for solving on `guessNumber` (1..6) at a given `skewLevel` (3..5), or failing (null).
  */
-export function calculateWordlePayout(wager, solvedOnGuess) {
-  if (!solvedOnGuess || !GUESS_PAYOUT_MULTIPLIERS[solvedOnGuess]) {
+export function calculateWordlePayout(wager, solvedOnGuess, skewLevel = 4) {
+  const multipliers = getPayoutMultipliers(skewLevel);
+  if (!solvedOnGuess || !multipliers[solvedOnGuess]) {
     return { multiplier: 0, payout: 0, net: -wager };
   }
-  const multiplier = GUESS_PAYOUT_MULTIPLIERS[solvedOnGuess];
+  const multiplier = multipliers[solvedOnGuess];
   const payout = Math.round(wager * multiplier);
   return {
     multiplier,
@@ -217,7 +242,11 @@ export function submitWordleGuess(round, rawGuess) {
   if (isWin) {
     round.status = 'won';
     round.solvedOnGuess = round.guesses.length;
-    const { multiplier, payout } = calculateWordlePayout(round.wager, round.solvedOnGuess);
+    const { multiplier, payout } = calculateWordlePayout(
+      round.wager,
+      round.solvedOnGuess,
+      round.skewLevel
+    );
     round.multiplier = multiplier;
     round.payout = payout;
   } else if (round.guesses.length >= MAX_GUESSES) {

@@ -6,6 +6,8 @@ import { ANSWER_WORDS, SCORED_ANSWERS } from '../src/games/wordle/wordList.js';
 import {
   evaluateGuess,
   selectSkewedWord,
+  getPayoutMultipliers,
+  calculateWordlePayout,
   createWordleRound,
   submitWordleGuess,
   MAX_GUESSES,
@@ -94,9 +96,25 @@ function simulateWordleBotRound(skewLevel, rng) {
   return round;
 }
 
+test('Wordle prize multipliers decrease as skew level increases (more skew = less prize)', () => {
+  const m3 = getPayoutMultipliers(3);
+  const m4 = getPayoutMultipliers(4);
+  const m5 = getPayoutMultipliers(5);
+
+  for (let guess = 1; guess <= MAX_GUESSES; guess++) {
+    assert.ok(
+      m3[guess] > m4[guess] && m4[guess] > m5[guess],
+      `Expected decreasing multiplier for guess ${guess}: Skew 3 (${m3[guess]}) > Skew 4 (${m4[guess]}) > Skew 5 (${m5[guess]})`
+    );
+    const p3 = calculateWordlePayout(100, guess, 3);
+    const p4 = calculateWordlePayout(100, guess, 4);
+    const p5 = calculateWordlePayout(100, guess, 5);
+    assert.ok(p3.payout > p4.payout && p4.payout > p5.payout);
+  }
+});
+
 test('Casino Wordle yields positive player EV (> 1.0x RTP) across skew levels 3, 4, and 5', () => {
   const roundsPerLevel = 450;
-  const rtpByLevel = {};
 
   for (const level of [3, 4, 5]) {
     const rng = createRng(500 + level);
@@ -113,7 +131,6 @@ test('Casino Wordle yields positive player EV (> 1.0x RTP) across skew levels 3,
 
     const rtp = totalReturned / totalWagered;
     const winRate = wins / roundsPerLevel;
-    rtpByLevel[level] = rtp;
 
     assert.ok(
       winRate > 0.9,
@@ -124,13 +141,4 @@ test('Casino Wordle yields positive player EV (> 1.0x RTP) across skew levels 3,
       `Expected player-favorable RTP > 1.05 at skewLevel=${level}, got ${rtp.toFixed(3)}`
     );
   }
-
-  assert.ok(
-    rtpByLevel[4] >= rtpByLevel[3],
-    `Expected RTP(4)=${rtpByLevel[4].toFixed(3)} >= RTP(3)=${rtpByLevel[3].toFixed(3)}`
-  );
-  assert.ok(
-    rtpByLevel[5] >= rtpByLevel[4],
-    `Expected RTP(5)=${rtpByLevel[5].toFixed(3)} >= RTP(4)=${rtpByLevel[4].toFixed(3)}`
-  );
 });

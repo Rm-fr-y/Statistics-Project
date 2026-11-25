@@ -13,7 +13,7 @@ A zero-build, vanilla HTML, CSS, and modular JavaScript casino web application f
 - **Long-Run Result**: Dead-center timing is strictly optimal at **46.0% win rate** on a 2x payout (**−8.0% EV**, house favored in the long run).
 
 ### 2. Casino Wordle — Player Edge (+EV)
-- **Gameplay**: 5-letter, 6-guess Wordle with a tiered **guess-based prize ladder** (`5.0x` on Guess 1 down to `0.60x` on Guess 6).
+- **Gameplay**: 5-letter, 6-guess Wordle with a tiered **guess-based prize ladder** that scales down as player skew increases (`5.0x`–`0.60x` at Skew 3, `4.0x`–`0.50x` at Skew 4, `3.0x`–`0.40x` at Skew 5).
 - **Adjusted Letter Rates & `3–5` Skew Variable**: Secret words are sampled using English letter-frequency friendliness weights (excluding rare letters like `Q, Z, X, J, V, K`) controlled by the selectable **`skewLevel` (`3`, `4`, or `5`)**:
   - **Level 3 (Lucky Letters)**: Frequency-weighted common letters, rare letters removed.
   - **Level 4 (High Roller)**: Unique-letter common pool + 1 guaranteed present-letter hint.
@@ -28,7 +28,7 @@ A zero-build, vanilla HTML, CSS, and modular JavaScript casino web application f
   3. **Consecutive Skip Cap (Max 1)** prevents 1v1 Skip/Reverse action lockouts.
   4. Symmetric **`+2` stacking** and **Draw-1-and-Play**.
   5. Fair deadlock tiebreaker (lowest hand points wins; exact tie = Push returning 1x stake).
-- **Long-Run Result**: Verified **50.0% ± 2.0% win rate (~100% RTP)** over thousands of simulated matches.
+- **Long-Run Result**: Verified **50.0% ± 2.0% win rate (~100% RTP)** over thousands of symmetric simulated matches.
 
 ## Running Locally
 
