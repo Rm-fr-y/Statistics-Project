@@ -209,8 +209,9 @@ export function mountWordleGame(container) {
     });
 
     // Update payout ladder active row, multipliers & chip values
-    const stake = round ? round.wager : wager;
-    const activeSkew = round ? round.skewLevel : skewLevel;
+    const isPlaying = Boolean(round && round.status === 'playing');
+    const stake = isPlaying ? round.wager : wager;
+    const activeSkew = isPlaying ? round.skewLevel : skewLevel;
     const multipliers = getPayoutMultipliers(activeSkew);
     ladderLabelEl.textContent = `Adjusted Prize Ladder (Skew ${activeSkew})`;
 
